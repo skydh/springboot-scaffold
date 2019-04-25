@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<property name="log.path" value="${LOG_PATH}/com-dh.log" />
+
+	<!--输出到控制台 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> <level>ERROR</level> 
+			</filter> -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %contextName spring-scaffold [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!--输出到文件 -->
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.path}.%d{yyyy-MM-dd}/1.%i.log
+			</fileNamePattern>
+			<!-- 如果按天来回滚，则最大保存时间为30天，30天之前的都将被清理掉 -->
+			<maxHistory>30</maxHistory>
+			<!-- 日志总保存量为10GB -->
+			<totalSizeCap>10 GB</totalSizeCap>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!--文件达到 最大128MB时会被压缩和切割 -->
+				<maxFileSize>128 MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %contextName cim-web [%thread] %-5level %logger{36}- %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</root>
+
+
+	<!-- swagger的一个bug: AbstractSerializableParameter；忽略这个错误 @ApiModelProperty注解在字段上时，如果字段的类型为Long或是int类型，那么程序启动后，访问swagger-ui.html的页面，程序会报错 -->
+	<logger name="io.swagger.models.parameters.AbstractSerializableParameter"
+		level="ERROR" additivity="false">
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</logger>
+
+
+</configuration>
