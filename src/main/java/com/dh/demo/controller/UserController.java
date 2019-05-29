@@ -16,6 +16,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +44,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "UserController", description = "综合案例demo")
 @Controller
-@RequestMapping(value =  "/hello")
+@RequestMapping(value = "/hello")
 @RestControllerAdvice
 public class UserController {
 
@@ -108,7 +111,6 @@ public class UserController {
 		// String.class);
 		System.out.println(redisTemplate.opsForValue().get("111"));
 
-	
 		return "hello";
 	}
 
@@ -124,15 +126,12 @@ public class UserController {
 		return result;
 	}
 
-	
-
 	@ApiOperation(value = "事务处理")
 	@RequestMapping(value = "/transactionalTry", method = RequestMethod.GET)
 	@ResponseBody
 	@NoLogin
 	public String transactionalTry() {
 
-		
 		return "hello";
 	}
 
@@ -161,5 +160,30 @@ public class UserController {
 		String sql = "select a.id as userId from user a inner join orders b on a.id=b.user_id where a.id=? and b.name=?";
 		result.setResponseData(pageHelper.getListDataByUserId(sql, pageable, UserOrderVO.class, 1, "asas"));
 		return result;
+	}
+
+	@Autowired
+	private JavaMailSender javaMailSender;
+
+	@RequestMapping("/sendEmail")
+	@ResponseBody
+	public boolean sendEmail() {
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setFrom("757486169@qq.com");
+		msg.setBcc();
+		msg.setTo("donghang846@pingan.com.cn");
+		msg.setSubject("董航");
+		msg.setText("董航");
+		
+		
+		try {
+			javaMailSender.send(msg);
+			
+			System.out.println("发送好了");
+		} catch (MailException ex) {
+			System.err.println(ex.getMessage());
+			return false;
+		}
+		return true;
 	}
 }
