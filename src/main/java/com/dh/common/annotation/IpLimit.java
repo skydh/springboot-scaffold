@@ -6,27 +6,25 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.concurrent.TimeUnit;
-
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface RedisJobLock {
+public @interface IpLimit {
 
 	/***
-	 * 过期时间
+	 * 次数
 	 * 
 	 * @return
 	 */
-	int expire() default 5;
+	int times() default 3;
 
 	/***
-	 * 超时时间单位
+	 * 过期时间/秒
 	 * 
 	 * @return
 	 */
-	TimeUnit timeUnit() default TimeUnit.SECONDS;
+	long timeUnit() default 3600L;
 
 }

@@ -18,6 +18,11 @@ import org.springframework.stereotype.Component;
 import com.dh.common.annotation.Valid;
 import com.dh.common.exception.VaildException;
 
+/**
+ * 参数检验
+ * @author Lenovo
+ *
+ */
 @Aspect
 @Component
 public class ValidAspect {
