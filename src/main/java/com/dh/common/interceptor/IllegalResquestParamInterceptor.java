@@ -1,6 +1,7 @@
 package com.dh.common.interceptor;
 
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dh.common.enums.IllegalEnum;
 import com.dh.common.exception.BusinessException;
 
 /**
@@ -63,10 +65,11 @@ public class IllegalResquestParamInterceptor implements HandlerInterceptor {
 		if (StringUtils.isEmpty(str)) {
 			return false;// 如果传入空串则认为不存在非法字符
 		}
+		List<String> list = IllegalEnum.getEnumList();
+		String[] inj_stra = list.toArray(new String[list.size()]);
+
 		// 判断黑名单
-		String[] inj_stra = { "script", "src", "mid", "master", "truncate", "insert", "select", "delete", "update",
-				"declare", "iframe", "onreadystatechange", "alert", "atestu", "xss", ";", "'", "\"", "<", ">", "+",
-				"\\", "svg", "confirm", "prompt", "onload", "onmouseover", "onfocus", "onerror" };
+
 		str = str.toLowerCase(); // sql不区分大小写
 		for (int i = 0; i < inj_stra.length; i++) {
 			if (str.contains(inj_stra[i])) {
@@ -75,5 +78,4 @@ public class IllegalResquestParamInterceptor implements HandlerInterceptor {
 		}
 		return false;
 	}
-
 }

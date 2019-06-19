@@ -16,7 +16,7 @@ public class RedisLockUtils {
 	 * @param timeUnit
 	 * @return
 	 */
-	public boolean setLock(StringRedisTemplate redisTemplate,String key, String value, int expireTime, TimeUnit timeUnit) {
+	public static boolean setLock(StringRedisTemplate redisTemplate,String key, String value, int expireTime, TimeUnit timeUnit) {
 		return redisTemplate.opsForValue().setIfAbsent(key, value, expireTime, timeUnit);
 	}
 
@@ -28,7 +28,7 @@ public class RedisLockUtils {
 	 * @return
 	 * 
 	 */
-	public boolean releaseLock(StringRedisTemplate redisTemplate,String key, String value) {
+	public static boolean releaseLock(StringRedisTemplate redisTemplate,String key, String value) {
 
 		String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 		DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();

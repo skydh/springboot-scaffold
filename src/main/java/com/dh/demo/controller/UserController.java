@@ -1,14 +1,18 @@
 package com.dh.demo.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +21,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -167,23 +171,31 @@ public class UserController {
 
 	@RequestMapping("/sendEmail")
 	@ResponseBody
-	public boolean sendEmail() {
-		SimpleMailMessage msg = new SimpleMailMessage();
-		msg.setFrom("757486169@qq.com");
-		msg.setBcc();
-		msg.setTo("donghang846@pingan.com.cn");
-		msg.setSubject("董航");
-		msg.setText("董航");
-		
-		
+	public void sendEmail() throws Exception {
+		MimeMessage message = javaMailSender.createMimeMessage();
+
+		MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		helper.setFrom("757486169@qq.com");
+		helper.setTo("donghang846@pingan.com.cn");
+		helper.setSubject("董航");
+		helper.setText("董航");
+		// SXSSFWorkbook book=ExcelUtils.title();
+		// FileSystemResource file = new FileSystemResource(bos);
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		// book.write(os);
+		// book.close();
+
+		InputStreamSource iss = new ByteArrayResource(os.toByteArray());
+		os.close();
+
+		helper.addAttachment("helloword", iss);
 		try {
-			javaMailSender.send(msg);
-			
+			javaMailSender.send(message);
+
 			System.out.println("发送好了");
 		} catch (MailException ex) {
 			System.err.println(ex.getMessage());
-			return false;
+
 		}
-		return true;
 	}
 }
