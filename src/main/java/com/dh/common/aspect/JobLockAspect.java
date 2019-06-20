@@ -32,7 +32,7 @@ public class JobLockAspect {
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 
-	@Pointcut("@annotation(ccom.dh.common.annotation.RedisJobLock)")
+	@Pointcut("@annotation(com.dh.common.annotation.RedisJobLock)")
 	public void redisJobAspect() {
 
 	}

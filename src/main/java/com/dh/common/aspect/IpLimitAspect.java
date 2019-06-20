@@ -34,7 +34,7 @@ public class IpLimitAspect {
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 
-	@Pointcut("@annotation(com.pingan.haofang.pauct.common.annotation.IpLimit)")
+	@Pointcut("@annotation(com.dh.common.annotation.IpLimit)")
 	public void IpLimit() {
 	}
 
