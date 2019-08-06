@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 
 public class SimpleKafkaConsumer {
 
-	private static final String brokeList = "192.168.147.131:9092";
+	private static final String brokeList = "192.168.147.132:9092";
 	private static final String topic = "topic-demo111";
 	private static final String groupId = "group.demo";
 	private static final AtomicBoolean isRunning = new AtomicBoolean(true);
