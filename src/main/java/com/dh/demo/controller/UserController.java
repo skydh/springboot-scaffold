@@ -56,6 +56,23 @@ public class UserController {
 
 	@Autowired
 	private UserService service;
+	
+	
+	
+	
+	
+	
+	@ApiOperation(value = "save")
+	@RequestMapping(value = "/save", method = RequestMethod.GET)
+	@ResponseBody
+	public User getById(@RequestParam(value = "userName", required = true) String userName) {
+		User user = new User();
+		user.setName(userName);
+		service.save(user);
+		return user;
+	}
+
+	
 
 	@ApiOperation(value = "jpa初试")
 	@RequestMapping(value = "/jpa/{id}", method = RequestMethod.GET)

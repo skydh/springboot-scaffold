@@ -21,4 +21,6 @@ public interface UserService {
 
 	void transactionTry();
 
+	void save(User user);
+
 }

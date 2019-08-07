@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Page<User> findByName(String name, Pageable pageable) {
-		
+
 		// System.out.println(userJpaDao.findUserByName(name,
 		// pageable).getClass());
 		return userJpaDao.findUserByName(name, pageable);
@@ -70,20 +70,24 @@ public class UserServiceImpl implements UserService {
 	@Qualifier("mysqlJdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
 
-//	@Autowired
-//	@Qualifier("pgJdbcTemplate")
-//	protected JdbcTemplate jdbcTemplate2;
+	// @Autowired
+	// @Qualifier("pgJdbcTemplate")
+	// protected JdbcTemplate jdbcTemplate2;
 
 	@Override
 	@Transactional(value = "transactionManager")
 	public void transactionTry() {
-		
 
 		User user = new User();
 
-		
 		userJpaDao.save(user);
-		
+
+	}
+
+	@Override
+	public void save(User user) {
+		// TODO Auto-generated method stub
+		userJpaDao.save(user);
 	}
 
 }
