@@ -49,7 +49,6 @@ public class UserDao {
 	 * 
 	 */
 	public void batchInsert(List<User> list) {
-
 		jdbcTemplate.batchUpdate("insert into user (id,name,address) values (?, ?, ?)",
 				new BatchPreparedStatementSetter() {
 					// 为prepared statement设置参数。这个方法将在整个过程中被调用的次数

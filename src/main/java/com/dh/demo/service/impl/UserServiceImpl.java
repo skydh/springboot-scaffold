@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void batchInsert(List<User> user) {
 
-		userDao.batchInsert(user);
+		userDao.getListDataByUserId(1);
+		// userDao.batchInsert(user);
 
 	}
 

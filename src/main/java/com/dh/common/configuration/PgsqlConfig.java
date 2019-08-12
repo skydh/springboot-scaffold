@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,16 +33,15 @@ public class PgsqlConfig {
 
 	@Bean(name = "entityManagerFactoryPg")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactorySecondary(EntityManagerFactoryBuilder builder) {
-		return builder.dataSource(pgDataSource).properties(getVendorProperties())
-				.packages("com.dh.pgsql") // 设置实体类所在位置
+		return builder.dataSource(pgDataSource).properties(getVendorProperties()).packages("com.dh.pgsql") // 设置实体类所在位置
 				.persistenceUnit("pgPersistenceUnit").build();
 	}
 
 	@Autowired
-	private JpaProperties jpaProperties;
+	private HibernateProperties hibernateProperties;
 
 	private Map<String, String> getVendorProperties() {
-		return jpaProperties.getProperties();
+		return hibernateProperties.getMysql().getProperties();
 	}
 
 	@Bean(name = "transactionManagerPg")

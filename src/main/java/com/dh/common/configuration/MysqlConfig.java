@@ -42,10 +42,10 @@ public class MysqlConfig {
 	}
 
 	@Autowired
-	private JpaProperties jpaProperties;
+	private HibernateProperties hibernateProperties;
 
 	private Map<String, String> getVendorProperties() {
-		return jpaProperties.getProperties();
+		return hibernateProperties.getMysql().getProperties();
 	}
 
 	@Primary

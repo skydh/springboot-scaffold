@@ -56,12 +56,7 @@ public class UserController {
 
 	@Autowired
 	private UserService service;
-	
-	
-	
-	
-	
-	
+
 	@ApiOperation(value = "save")
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	@ResponseBody
@@ -71,8 +66,6 @@ public class UserController {
 		service.save(user);
 		return user;
 	}
-
-	
 
 	@ApiOperation(value = "jpa初试")
 	@RequestMapping(value = "/jpa/{id}", method = RequestMethod.GET)
