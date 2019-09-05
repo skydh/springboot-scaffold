@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -36,6 +37,8 @@ public class UserDao {
 	 */
 	@SuppressWarnings("all")
 	public List<UserOrderVO> getListDataByUserId(int userId) {
+		DataSource da=	jdbcTemplate.getDataSource();
+		
 		List<UserOrderVO> listVO = jdbcTemplate.query(
 				"select a.id as userId from user a inner join orders b on a.id=b.user_id where a.id=? and b.name=?",
 				new BeanPropertyRowMapper(UserOrderVO.class), userId, "asas");
