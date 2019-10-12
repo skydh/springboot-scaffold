@@ -36,6 +36,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 			// TODO
 
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			System.out.println(request.getRequestURL());
 			Class<?> clazz = handlerMethod.getBeanType();
 			Method m = handlerMethod.getMethod();
 			if (clazz.isAnnotationPresent(NoLogin.class) || m.isAnnotationPresent(NoLogin.class)) {

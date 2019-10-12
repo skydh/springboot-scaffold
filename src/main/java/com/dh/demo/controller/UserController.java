@@ -1,11 +1,16 @@
 package com.dh.demo.controller;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dh.common.annotation.NoLogin;
 import com.dh.common.annotation.Valid;
@@ -58,12 +64,43 @@ public class UserController {
 	private UserService service;
 
 	@ApiOperation(value = "save")
-	@RequestMapping(value = "/save", method = RequestMethod.GET)
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
-	public User getById(@RequestParam(value = "userName", required = true) String userName) {
+	public User getById(@RequestParam("csvFile") MultipartFile file) throws IOException {
 		User user = new User();
-		user.setName(userName);
-		service.save(user);
+		InputStream inputStream = null;
+		FileOutputStream out = null;
+		System.out.println(file.getSize());
+		try {
+			inputStream = file.getInputStream();
+			out = new FileOutputStream(new File("test1.txt"));
+			byte[] bytes = new byte[1024 * 1024 * 5];
+
+			int length;
+			while ((length = inputStream.read(bytes)) > 0) {
+				out.write(bytes, 0, length);
+				out.flush();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		return user;
 	}
 
@@ -118,7 +155,9 @@ public class UserController {
 	@ApiOperation(value = "业务异常")
 	@RequestMapping(value = "/exception", method = RequestMethod.GET)
 	@ResponseBody
-	public String exceptionTry() {
+	public String exceptionTry(HttpServletRequest request) {
+		System.out.println(request.getRequestURL());
+		System.out.println(request.getRequestURI());
 		redisTemplate.opsForValue().set("111", "asdasd");
 		// String quoteString =
 		// restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random",
@@ -208,6 +247,5 @@ public class UserController {
 
 		}
 	}
-	
 
 }
