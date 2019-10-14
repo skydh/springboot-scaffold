@@ -225,7 +225,7 @@ public class UserController {
 
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		helper.setFrom("757486169@qq.com");
-		helper.setTo("donghang846@pingan.com.cn");
+		helper.setTo("");
 		helper.setSubject("董航");
 		helper.setText("董航");
 		// SXSSFWorkbook book=ExcelUtils.title();
